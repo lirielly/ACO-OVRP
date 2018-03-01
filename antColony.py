@@ -85,12 +85,12 @@ class AntColony(object):
                 for x in range(len(ant.vehicles)): 
                     ant.vehicles[x].put_node_path(0, self.occupancies, 
                                 self.distances, self.times)
-                    
-                #PAREI AQUI
-                
                 ant.build_path(self.distances, self.pheromone, self.alpha, 
                                self.beta)
                 ant.calculate_distance(self.distances)
+                
+                #PAREI AQUI - calcular FO considerando os veículos
+                
                 ant.objectve_function(self.distance_cost)
                 colony.append(ant)    
             

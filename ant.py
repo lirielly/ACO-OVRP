@@ -19,36 +19,69 @@ class Ant(object):
         self.vehicles = shuffle(vehicles)
         self.vehicle_idx = 0
     
-    def calculate_probabilities(self, distances, pheromone, alpha, beta):
+    def calculate_probabilities(self, distances, feasible_nodes, pheromone, alpha, beta):
         '''
-        Function to calculate all probability values
+        Function to calculate the feasible nodes probability values
         '''
         probabilities = []
-        current_node = self.path[-1]
-        for i in self.possible_nodes:
-            probabilities.append((pheromone[current_node, i]**alpha)*((1/distances[current_node, i])**beta))
+        current_node = self.vehicles[self.vehicle_idx].path[-1]
+        for i in feasible_nodes:
+            probabilities.append((pheromone[current_node, i]**alpha)*
+                                 ((1/distances[current_node, i])**beta))
 
         return probabilities/sum(probabilities)
     
-    def chose_next_node(self, distances, pheromone, alpha, beta):
+    def constrains(self, times, occupancies):
+        '''
+        Function to test each node in the constrains and return the feasibles 
+        nodes according to the constrains outcome
+        '''
+        feasible_nodes = []
+        for node in self.possible_nodes:
+            if (self.vehicles[self.vehicle_idx].travel_time + times[self.path[-1], node]) <= self.vehicles[self.vehicle_idx].max_travel_time and (self.vehicles[self.vehicle_idx].occupancy + occupancies[self.path[-1]]) <= self.vehicles[self.vehicle_idx].capacity:
+                feasible_nodes.append(node)
+                
+        return feasible_nodes
+
+    def chose_next_node(self, distances, feasible_nodes, pheromone, alpha, 
+                        beta, occupancies, times):
         '''
         Function to chose the next visited node
         '''
-        probabilities = self.calculate_probabilities(distances, pheromone, alpha, beta)
+        probabilities = self.calculate_probabilities(distances, feasible_nodes, 
+                                                     pheromone, alpha, beta)
         rw = np.random.rand()
         sum_ = 0.0
         for i in range(len(probabilities)):
             sum_ += probabilities[i]
             if sum_ >= rw:
-                self.path.append(self.possible_nodes.pop(i))
+                node_chosen = self.possible_nodes.pop(i)
+                self.path.append(node_chosen)
+                self.vehicles[self.vehicle_idx].put_node_path(node_chosen, 
+                             occupancies, distances, times)
                 break
             
-    def build_path(self, distances, pheromone, alpha, beta):
+    def build_path(self, distances, times, occupancies, pheromone, alpha, 
+                   beta):
         '''
         Function to build a path for an ant
         '''
         for i in range(distances.shape[0] - 1):
-            self.chose_next_node(distances, pheromone, alpha, beta)
+            feasible_nodes = []
+            while(not feasible_nodes):
+                feasible_nodes = self.constrains(times, occupancies)
+                
+                if not feasible_nodes and self.vehicles[self.vehicle_idx].occupancy != 0:
+                    self.vehicle_idx += 1
+                elif not feasible_nodes and self.vehicles[self.vehicle_idx].occupancy == 0:
+                    print("Impossible solution. Tried to use another vehicle without use the previews one!")
+                    self.vehicles = []
+                    self.path = []
+                    self.vehicle_idx = 0
+                    return
+            
+            self.chose_next_node(distances, feasible_nodes, pheromone, alpha, 
+                                 beta, occupancies, times)
             
     def calculate_distance(self, distances):
         '''
