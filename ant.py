@@ -16,8 +16,13 @@ class Ant(object):
         self.of_value = math.inf
         self.distance = 0.0
         self.possible_nodes = [x for x in range(size) if x != start_node]
-        self.vehicles = shuffle(vehicles)
+        self.vehicles = vehicles
+        shuffle(self.vehicles)
         self.vehicle_idx = 0
+        
+        print("Aqui")
+        print(len(vehicles))
+   
     
     def calculate_probabilities(self, distances, feasible_nodes, pheromone, alpha, beta):
         '''
@@ -30,6 +35,7 @@ class Ant(object):
                                  ((1/distances[current_node, i])**beta))
 
         return probabilities/sum(probabilities)
+   
     
     def constrains(self, times, occupancies):
         '''
@@ -38,10 +44,11 @@ class Ant(object):
         '''
         feasible_nodes = []
         for node in self.possible_nodes:
-            if (self.vehicles[self.vehicle_idx].travel_time + times[self.path[-1], node]) <= self.vehicles[self.vehicle_idx].max_travel_time and (self.vehicles[self.vehicle_idx].occupancy + occupancies[self.path[-1]]) <= self.vehicles[self.vehicle_idx].capacity:
+            if (self.vehicles[self.vehicle_idx].travel_time + times[self.path[-1], node]) <= self.vehicles[self.vehicle_idx].max_travel_time and (self.vehicles[self.vehicle_idx].occupancy + occupancies[node]) <= self.vehicles[self.vehicle_idx].capacity:
                 feasible_nodes.append(node)
                 
         return feasible_nodes
+
 
     def chose_next_node(self, distances, feasible_nodes, pheromone, alpha, 
                         beta, occupancies, times):
@@ -60,6 +67,7 @@ class Ant(object):
                 self.vehicles[self.vehicle_idx].put_node_path(node_chosen, 
                              occupancies, distances, times)
                 break
+         
             
     def build_path(self, distances, times, occupancies, pheromone, alpha, 
                    beta):
@@ -83,6 +91,7 @@ class Ant(object):
             self.chose_next_node(distances, feasible_nodes, pheromone, alpha, 
                                  beta, occupancies, times)
             
+            
     def calculate_distance(self, distances):
         '''
         Function to calculate the distance traveled by the ant
@@ -93,13 +102,23 @@ class Ant(object):
             self.distance += distances[current_node, next_node]
             current_node = next_node
         self.distance += distances[current_node, self.path[0]]
-            
+     
+        
     def objectve_function(self, distance_cost):
         '''
-        Function to calculate the objection function
+        Function to calculate the objection function of the problem
         '''
-        self.of_value = self.distance * distance_cost
+        vehicle_cost = 0
+        distance = 0
         
+        for x in range(self.vehicle_idx):
+            if self.vehicles[x].occupancy != 0:
+                vehicle_cost += self.vehicles[x].v_cost
+                distance += (self.vehicles[x].distance * self.vehicles[x].km_cost)
+        
+        self.of_value = vehicle_cost + distance 
+    
+    
     def of(self):
         '''
         Function to return the of value

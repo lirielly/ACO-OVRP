@@ -37,7 +37,6 @@ class AntColony(object):
         self.times = time_matrix
         self.occupancies = occupancies
         self.vehicles = vehicles
-
    
     
     def find_n_bests_ants(self, colony):
@@ -73,8 +72,7 @@ class AntColony(object):
     def run(self):
         '''
         Function to run the rank based Ant Colony Optimization algorithm
-        '''
-        
+        '''       
         best_ant = Ant(0, 0, [])
         
         for i in range(self.n_iterations):
@@ -82,15 +80,14 @@ class AntColony(object):
             colony = []
             for j in range(self.n_ants):
                 ant = Ant(0, self.distances.shape[0], list(self.vehicles))
+                print("AQUI")
+                print(len(ant.vehicles))
                 for x in range(len(ant.vehicles)): 
                     ant.vehicles[x].put_node_path(0, self.occupancies, 
                                 self.distances, self.times)
-                ant.build_path(self.distances, self.pheromone, self.alpha, 
-                               self.beta)
+                ant.build_path(self.distances, self.times, self.occupancies,
+                               self.pheromone, self.alpha, self.beta)
                 ant.calculate_distance(self.distances)
-                
-                #PAREI AQUI - calcular FO considerando os veículos
-                
                 ant.objectve_function(self.distance_cost)
                 colony.append(ant)    
             
@@ -102,5 +99,3 @@ class AntColony(object):
             self.update_pheromone(best_ant, n_bests_ants)
         print(self.pheromone)
         return best_ant
-        
-        

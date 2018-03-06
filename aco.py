@@ -11,20 +11,24 @@ from antColony import AntColony
 from vehicle import Vehicle
 
 def read_square_matrix(file_name):
-    matrix = pd.read_csv(file_name, header=None, sep=';', decimal=",")
+    matrix = pd.read_csv(file_name, header=None, sep=';')
+    print(matrix.info())
     if(matrix.shape[0] != matrix.shape[1]):
         raise Exception('Matrix has to be a square matrix!')
-    return matrix.value
+    return matrix.values
 
 def read_list(file_name):
-    return pd.read_csv(file_name, header=None, sep=';', decimal=",").values
+    teste = pd.read_csv(file_name, header=None, sep=';')
+    print(teste.info())
+    return pd.read_csv(file_name, header=None, sep=';').values
 
 def read_vehicle(file_name):
     vehicles = []
     with open(file_name, 'r') as f:
         for line in f:
-            values = line.split(';')
-            v = Vehicle(values[0], values[1], values[2], values[3])
+            values = line.replace(',', '.').split(';')
+            print(int(values[0]), float(values[1]), int(values[2]), float(values[3]))
+            v = Vehicle(int(values[0]), float(values[1]), int(values[2]), float(values[3]))
             vehicles.append(v)
     
     return vehicles
@@ -50,7 +54,7 @@ if __name__ == '__main__':
                         dest='file_name_distance', default='distances.csv', 
                         help='distance matrix values')
     parser.add_argument('-v', '--vehicle_file', 
-                        dest='file_name_vehicle', default='vehicle.csv', 
+                        dest='file_name_vehicle', default='vehicles.csv', 
                         help='vehicle information')
     parser.add_argument('-t', '--time_matrix', 
                         dest='file_name_time', default='times.csv',  
@@ -69,7 +73,7 @@ if __name__ == '__main__':
     occupancies = read_list(args.file_name_occupancy)
     
     vehicles = read_vehicle(args.file_name_vehicle)
-    
+
     colony = AntColony(distance_matrix, args.c, args.k, args.n, args.i, args.p,
                        args.a, args.b, time_matrix, occupancies, vehicles)
     best_ant = colony.run()

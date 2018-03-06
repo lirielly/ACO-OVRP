@@ -16,16 +16,17 @@ class Vehicle(object):
         self.distance = 0
         self.max_travel_time = max_time
         self.travel_time = 0      
-        
+   
+     
     def put_node_path(self, node, occupancies, distances, times):
         '''
         Function to update path, occupancy, distance, travel_time of a vehicle
         '''
-        self.path.append(node)
-        self.occupancy += occupancies[node]
         if self.path:
+            self.path.append(node)
+            self.occupancy += occupancies[node]
             self.distance += distances[self.path[-2], self.path[-1]]
             self.travel_time += times[self.path[-2], self.path[-1]]
-            
-            
-        
+        else:
+            self.path.append(node)
+            #Quando não for o zero no começo inserir aqui self.occupancy += occupancies[node]
