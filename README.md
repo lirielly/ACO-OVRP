@@ -1,6 +1,6 @@
 # ACO-OVRP
 
-Open Vehicle Routing Problem (OVRP) é uma das classes do Vehicle Routing Problem (VRP) e se difere deste pelo fato de os veículos não retornarem ao depósito (nesse caso a garagem) após visitarem o último cliente Güler e Şevkli (2015). O OVRP é um problema NP-Hard e, portanto, são problemas difíceis de encontrar soluções ótimas para instâncias muito grandes em um tempo computacional razoável devido à sua complexidade combinatória. Uma maneira de resolver esses problemas do tipo NP-Hard de forma próxima da ótima em tempo computacional razoável é utilizando de meta-heurísticas.
+Open Vehicle Routing Problem (OVRP) é uma das classes do Vehicle Routing Problem (VRP) e se difere deste pelo fato de os veículos não retornarem ao depósito (nesse caso a garagem) após visitarem o último cliente Güler e Şevkli (2015). O OVRP é um problema NP-Hard e, portanto, são problemas difíceis de encontrar soluções ótimas para instâncias muito grandes em um tempo computacional razoável devido à sua complexidade combinatória. Uma maneira de resolver esses problemas do tipo NP-Hard de forma próxima da ótima em tempo computacional razoável é por meio da utilização de meta-heurísticas.
 
 A meta-heurística Rank-Based Ant System (RAS) para solucionar o OVRP aplicado ao transporte de empregados por uma frota de ônibus fretada. O RAS é uma variante da meta-heurística Ant Colony Optimization (ACO) e segundo Stützle e Dorigo (1999) ela foi a que apresentou melhores resultados quando comparada com as outras variantes do ACO.
 
