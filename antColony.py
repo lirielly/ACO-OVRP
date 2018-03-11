@@ -28,26 +28,26 @@ class AntColony(object):
             vehicles (list): list of vehicles
                   
         """
-        self.distances = distances
-        self.distance_cost = distance_cost
-        self.pheromone = np.ones(self.distances.shape)
-        self.n_ants = n_ants
-        self.n_best = n_best
-        self.n_iterations = n_iterations
-        self.rho = rho
-        self.alpha = alpha
-        self.beta = beta
-        self.times = time_matrix
-        self.occupancies = occupancies
-        self.vehicles = vehicles
+        self._distances = distances
+        self._distance_cost = distance_cost
+        self._pheromone = np.ones(self._distances.shape)
+        self._n_ants = n_ants
+        self._n_best = n_best
+        self._n_iterations = n_iterations
+        self._rho = rho
+        self._alpha = alpha
+        self._beta = beta
+        self._times = time_matrix
+        self._occupancies = occupancies
+        self._vehicles = vehicles
    
     
     def find_n_bests_ants(self, colony):
         '''
         Function to find the n ants that will update the pheromone trail
         '''
-        colony.sort(key=lambda ant: ant.of())
-        return colony[:self.n_best]
+        colony.sort(key=lambda ant: ant.of_value)
+        return colony[:self._n_best]
     
     
     def go_through_path(self, ant, factor):
@@ -57,19 +57,19 @@ class AntColony(object):
         current_node = ant.path[0]
         for i in range(len(ant.path) - 1):
             next_node = ant.path[i + 1]
-            self.pheromone[current_node, next_node] += factor/ant.distance
+            self._pheromone[current_node, next_node] += factor/ant.distance
     
     
     def update_pheromone(self, best_ant, n_bests_ants):
         '''
         Function to update the pheromone matrix
         '''
-        self.pheromone *= self.rho
+        self._pheromone *= self._rho
         
-        for i in range(self.n_best):
-            self.go_through_path(n_bests_ants[i], (self.n_best - i))
+        for i in range(self._n_best):
+            self.go_through_path(n_bests_ants[i], (self._n_best - i))
                 
-        self.go_through_path(best_ant, (self.n_best + 1))
+        self.go_through_path(best_ant, (self._n_best + 1))
         
         
     def run(self):
@@ -78,24 +78,26 @@ class AntColony(object):
         '''       
         best_ant = Ant(0, 0, [])
         
-        for i in range(self.n_iterations):
-            print("Iteration: %d Best OF: %f" %(i, best_ant.of()))
+        for i in range(self._n_iterations):
             colony = []
-            for j in range(self.n_ants):
-                ant = Ant(0, self.distances.shape[0], copy.deepcopy(self.vehicles))
+            for j in range(self._n_ants):
+                ant = Ant(0, self._distances.shape[0], copy.deepcopy(self._vehicles))
                 for x in range(len(ant.vehicles)): 
-                    ant.vehicles[x].put_node_path(0, self.occupancies, 
-                                self.distances, self.times)
-                ant.build_path(self.distances, self.times, self.occupancies,
-                               self.pheromone, self.alpha, self.beta)
-                ant.calculate_distance(self.distances)
-                ant.objectve_function(self.distance_cost)
+                    ant.vehicles[x].put_node_path(0, self._occupancies, 
+                                self._distances, self._times)
+                ant.build_path(self._distances, self._times, self._occupancies,
+                               self._pheromone, self._alpha, self._beta)
+                ant.calculate_distance(self._distances)
+                ant.objectve_function(self._distance_cost)
                 colony.append(ant)    
             
             n_bests_ants = self.find_n_bests_ants(colony)
             
-            if n_bests_ants[0].of() < best_ant.of():
+            if n_bests_ants[0].of_value < best_ant.of_value:
                 best_ant = n_bests_ants[0]
                 
             self.update_pheromone(best_ant, n_bests_ants)
+            
+            print("Iteration: %d Best OF: %f" %(i + 1, best_ant.of_value))
+            
         return best_ant

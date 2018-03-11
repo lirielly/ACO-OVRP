@@ -83,8 +83,8 @@ if __name__ == '__main__':
                        args.a, args.b, time_matrix, occupancies, vehicles)
     best_ant = colony.run()
     
-    print("OF: ")
-    print(best_ant.of())
+    print("\n\nOF: ")
+    print(best_ant.of_value)
     print("PATH: ")
     print(best_ant.path)
     
