@@ -1,1 +1,9 @@
 # ACO-OVRP
+
+Open Vehicle Routing Problem (OVRP) é uma das classes do Vehicle Routing Problem (VRP) e se difere deste pelo fato de os veículos não retornarem ao depósito (nesse caso a garagem) após visitarem o último cliente Güler e Şevkli (2015). O OVRP é um problema NP-Hard e, portanto, são problemas difíceis de encontrar soluções ótimas para instâncias muito grandes em um tempo computacional razoável devido à sua complexidade combinatória. Uma maneira de resolver esses problemas do tipo NP-Hard de forma próxima da ótima em tempo computacional razoável é utilizando de meta-heurísticas.
+
+A meta-heurística Rank-Based Ant System (RAS) para solucionar o OVRP aplicado ao transporte de empregados por uma frota de ônibus fretada. O RAS é uma variante da meta-heurística Ant Colony Optimization (ACO) e segundo Stützle e Dorigo (1999) ela foi a que apresentou melhores resultados quando comparada com as outras variantes do ACO.
+
+A Ant Colony Optimization (ACO) é uma meta-heurística inspirada no comportamento de colônias de formigas reais que gera uma solução para o problema de otimização por meio de um mecanismo construtivo. Dorigo e Stützle (2009) fizeram uma distinção entre as diferentes variantes do ACO. As variantes diferem da meta-heurística original na regra de atualização de feromônio. Entre as variantes do ACO, citam-se: Elitist Ant System (EAS) (Dorigo, 1992); Ant Colony System (ACS) (Dorigo e Gambardella, 1997); Rank-based Ant System (RAS) (Bullnheimer et al., 1999a); e MAX-MIN Ant System (MMAS) (Stützle e Hoos 2000).
+
+O RAS se difere dos demais algoritmos com base no ACO no modo em que é realizada a atualização da trilha de feromônio, pois a formiga que obteve a melhor rota global (global-best) é utilizada para atualizar a trilha de feromônio, além disso, um número γ de formigas que obtiveram as melhores rotas locais de cada iteração (local-best) também são utilizadas para fazer a atualização de feromônio (STÜTZLE e DORIGO, 1999).
