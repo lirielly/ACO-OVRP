@@ -19,9 +19,6 @@ class Ant(object):
         self.vehicles = vehicles
         shuffle(self.vehicles)
         self.vehicle_idx = 0
-        
-        print("Aqui")
-        print(len(vehicles))
    
     
     def calculate_probabilities(self, distances, feasible_nodes, pheromone, alpha, beta):
@@ -44,6 +41,15 @@ class Ant(object):
         '''
         feasible_nodes = []
         for node in self.possible_nodes:
+            '''print("IF")
+            print(self.vehicles[self.vehicle_idx].travel_time)
+            print(times[self.path[-1], node])
+            print(self.vehicles[self.vehicle_idx].max_travel_time)
+            print(self.vehicles[self.vehicle_idx].occupancy)
+            print("NODE")
+            print(node)
+            print(occupancies[0, node])
+            print(self.vehicles[self.vehicle_idx].capacity)'''
             if (self.vehicles[self.vehicle_idx].travel_time + times[self.path[-1], node]) <= self.vehicles[self.vehicle_idx].max_travel_time and (self.vehicles[self.vehicle_idx].occupancy + occupancies[node]) <= self.vehicles[self.vehicle_idx].capacity:
                 feasible_nodes.append(node)
                 
@@ -63,10 +69,13 @@ class Ant(object):
             sum_ += probabilities[i]
             if sum_ >= rw:
                 node_chosen = self.possible_nodes.pop(i)
-                self.path.append(node_chosen)
-                self.vehicles[self.vehicle_idx].put_node_path(node_chosen, 
-                             occupancies, distances, times)
-                break
+                if node_chosen != 0:
+                    self.path.append(node_chosen)
+                    self.vehicles[self.vehicle_idx].put_node_path(node_chosen, 
+                                 occupancies, distances, times)
+                    break
+                else:
+                    raise Exception('Warning! Next node zero is not allowed.')
          
             
     def build_path(self, distances, times, occupancies, pheromone, alpha, 
@@ -79,7 +88,7 @@ class Ant(object):
             while(not feasible_nodes):
                 feasible_nodes = self.constrains(times, occupancies)
                 
-                if not feasible_nodes and self.vehicles[self.vehicle_idx].occupancy != 0:
+                if not feasible_nodes and self.vehicles[self.vehicle_idx].occupancy != 0 and (self.vehicle_idx + 1) < len(self.vehicles):
                     self.vehicle_idx += 1
                 elif not feasible_nodes and self.vehicles[self.vehicle_idx].occupancy == 0:
                     print("Impossible solution. Tried to use another vehicle without use the previews one!")
@@ -113,7 +122,7 @@ class Ant(object):
         
         for x in range(self.vehicle_idx):
             if self.vehicles[x].occupancy != 0:
-                vehicle_cost += self.vehicles[x].v_cost
+                vehicle_cost += self.vehicles[x].vehicle_cost
                 distance += (self.vehicles[x].distance * self.vehicles[x].km_cost)
         
         self.of_value = vehicle_cost + distance 
@@ -123,4 +132,25 @@ class Ant(object):
         '''
         Function to return the of value
         '''
-        return self.of_value            
+        return self.of_value     
+
+    def __str__(self):
+        '''
+        Function to print important issues of an ant
+        '''
+        
+        out = "\nNumero de veiculos utilizados na solução: %d" % (self.vehicle_idx)
+        out += "\nInformação dos veiculos"
+        
+        #print("\nNumero de veiculos utilizados na solução: %d" % (self.vehicle_idx))
+        #print("Informação dos veiculos")
+        for i in range(self.vehicle_idx):
+            if self.vehicles[i].occupancy != 0:
+                out += "\n\nVeiculo: %d" % (i)
+                out += "\nNúmero de passageiros: %d" % (self.vehicles[i].occupancy)
+                out += "\nRota: "
+                out += str(self.vehicles[i].path)
+                out += "\nDistância percorrida: %f" % (self.vehicles[i].distance)
+                out += "\nTempo: %f \n" % (self.vehicles[i].travel_time)
+                
+        return out

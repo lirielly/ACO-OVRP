@@ -8,6 +8,7 @@ Date and hour: 02-01-2018 09:00:00 PM
 
 from ant import Ant
 import numpy as np
+import copy
 
 class AntColony(object):
     def __init__(self, distances, distance_cost, n_ants, n_best, n_iterations, 
@@ -22,10 +23,12 @@ class AntColony(object):
             rho (float): Rate it which pheromone decays. The pheromone value is multiplied by decay, so 0.95 will lead to decay, 0.5 to much faster decay.
             alpha (int or float): exponenet on pheromone, higher alpha gives pheromone more weight. Default=1
             beta (int or float): exponent on distance, higher beta give distance more weight. Default=1
-        Example:
-            ant_colony = AntColony(german_distances, 1.0, 100, 20, 2000, 0.95, alpha=1, beta=2)          
+            time_matrix (2D numpy.array): matrix of time of travel between pairs of nodes 
+            occupancies (list): list of occupancy units of vehicles
+            vehicles (list): list of vehicles
+                  
         """
-        self.distances  = distances
+        self.distances = distances
         self.distance_cost = distance_cost
         self.pheromone = np.ones(self.distances.shape)
         self.n_ants = n_ants
@@ -79,9 +82,7 @@ class AntColony(object):
             print("Iteration: %d Best OF: %f" %(i, best_ant.of()))
             colony = []
             for j in range(self.n_ants):
-                ant = Ant(0, self.distances.shape[0], list(self.vehicles))
-                print("AQUI")
-                print(len(ant.vehicles))
+                ant = Ant(0, self.distances.shape[0], copy.deepcopy(self.vehicles))
                 for x in range(len(ant.vehicles)): 
                     ant.vehicles[x].put_node_path(0, self.occupancies, 
                                 self.distances, self.times)
@@ -97,5 +98,4 @@ class AntColony(object):
                 best_ant = n_bests_ants[0]
                 
             self.update_pheromone(best_ant, n_bests_ants)
-        print(self.pheromone)
         return best_ant

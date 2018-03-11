@@ -11,23 +11,28 @@ from antColony import AntColony
 from vehicle import Vehicle
 
 def read_square_matrix(file_name):
+    '''
+    Function to read a 2D numpy array
+    '''
     matrix = pd.read_csv(file_name, header=None, sep=';')
-    print(matrix.info())
     if(matrix.shape[0] != matrix.shape[1]):
         raise Exception('Matrix has to be a square matrix!')
     return matrix.values
 
 def read_list(file_name):
-    teste = pd.read_csv(file_name, header=None, sep=';')
-    print(teste.info())
-    return pd.read_csv(file_name, header=None, sep=';').values
+    '''
+    Function to read a 1D numpy array
+    '''
+    return pd.read_csv(file_name, header=None, sep=';').values[0,]
 
 def read_vehicle(file_name):
+    '''
+    Function to read the information of each Vehicle and create a list
+    '''
     vehicles = []
     with open(file_name, 'r') as f:
         for line in f:
             values = line.replace(',', '.').split(';')
-            print(int(values[0]), float(values[1]), int(values[2]), float(values[3]))
             v = Vehicle(int(values[0]), float(values[1]), int(values[2]), float(values[3]))
             vehicles.append(v)
     
@@ -36,7 +41,7 @@ def read_vehicle(file_name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ACO')
-    parser.add_argument('-k', '--ants', type=int, dest='k', default='17',
+    parser.add_argument('-k', '--ants', type=int, dest='k', default='10',
                         help='ants number')
     parser.add_argument('-p', '--ro', type=float, dest='p', default='0.99',
                         help='pheromone rate decay')
@@ -47,9 +52,9 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--distance_cost', type=float, dest='c', 
                         default='1.0', help='one unit distance cost')
     parser.add_argument('-n', '--n_best_ants', type=int, dest='n', 
-                        default='10', help='best ants number')
+                        default='5', help='best ants number')
     parser.add_argument('-i', '--iterations', type=int, dest='i', 
-                        default='1', help='iterations number')
+                        default='10', help='iterations number')
     parser.add_argument('-d', '--distance_matrix', 
                         dest='file_name_distance', default='distances.csv', 
                         help='distance matrix values')
@@ -82,3 +87,5 @@ if __name__ == '__main__':
     print(best_ant.of())
     print("PATH: ")
     print(best_ant.path)
+    
+    print(best_ant)
