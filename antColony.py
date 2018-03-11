@@ -98,6 +98,6 @@ class AntColony(object):
                 
             self.update_pheromone(best_ant, n_bests_ants)
             
-            print("Iteration: %d Best OF: %f" %(i + 1, best_ant.of_value))
+            #print("Iteration: %d Best OF: %f" %(i + 1, best_ant.of_value))
             
         return best_ant

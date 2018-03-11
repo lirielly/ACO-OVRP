@@ -69,7 +69,7 @@ if __name__ == '__main__':
                         help='occupancies values')
     args = parser.parse_args()
     
-    print('Starting ACO Python!')    
+    #print('Starting ACO Python!')    
     
     distance_matrix = read_square_matrix(args.file_name_distance)
     
@@ -83,9 +83,13 @@ if __name__ == '__main__':
                        args.a, args.b, time_matrix, occupancies, vehicles)
     best_ant = colony.run()
     
-    print("\n\nOF: ")
-    print(best_ant.of_value)
-    print("PATH: ")
-    print(best_ant.path)
+    print("OF: %f" % (best_ant.of_value))
     
-    print(best_ant)
+    '''    
+    out = "OF:;%f"% (best_ant.of_value)
+    out += "\n;;Ants:;%f\n;;Number best ants:;%d\n;;Interations:;%d\n;;Rho:;%f\n;;Alpha:;%f\n;;Beta:;%f" % (args.k, args.n, args.i, args.p, args.a, args.b)
+    out += str(best_ant)
+    
+    with open("out_ACO.csv", 'a') as fileout:
+        fileout.write(out2)
+    '''

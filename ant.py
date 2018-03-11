@@ -216,18 +216,18 @@ class Ant(object):
         Function to print important issues of an ant
         '''
         
-        out = "\nNumero de veiculos utilizados na solução: %d" % (self._vehicle_idx + 1)
-        out += "\nInformação dos veiculos"
+        out = "\n;;;;Numero de veiculos utilizados na solução: %d" % (self._vehicle_idx + 1)
+        out += "\n;;;;Informação dos veiculos"
         
         #print("\nNumero de veiculos utilizados na solução: %d" % (self.vehicle_idx))
         #print("Informação dos veiculos")
         for i in range(self._vehicle_idx + 1):
             if self._vehicles[i].occupancy != 0:
-                out += "\n\nVeiculo: %d" % (i + 1)
-                out += "\nNúmero de passageiros: %d" % (self._vehicles[i].occupancy)
-                out += "\nRota: "
+                out += "\n\n;;;;Veiculo: %d" % (i + 1)
+                out += "\n;;;;Número de passageiros: %d" % (self._vehicles[i].occupancy)
+                out += "\n;;;;Rota: "
                 out += str(self._vehicles[i].path)
-                out += "\nDistância percorrida: %f" % (self._vehicles[i].distance)
-                out += "\nTempo: %f \n" % (self._vehicles[i].travel_time)
+                out += "\n;;;;Distância percorrida: %f" % (self._vehicles[i].distance)
+                out += "\n;;;;Tempo: %f \n" % (self._vehicles[i].travel_time)
                 
         return out
