@@ -65,7 +65,12 @@ class Ant(object):
         for i in range(len(probabilities)):
             sum_ += probabilities[i]
             if sum_ >= rw:
-                node_chosen = self._possible_nodes.pop(i)
+                
+                j = 0
+                while(self._possible_nodes[j] != feasible_nodes[i]):
+                    j += 1
+                    
+                node_chosen = self._possible_nodes.pop(j)
                 if node_chosen != 0:
                     self._path.append(node_chosen)
                     self._vehicles[self._vehicle_idx].put_node_path(node_chosen, 
@@ -84,7 +89,6 @@ class Ant(object):
             feasible_nodes = []
             while(not feasible_nodes):
                 feasible_nodes = self.constrains(times, occupancies)
-                
                 if (not feasible_nodes and 
                     self._vehicles[self._vehicle_idx].occupancy != 0 and 
                     (self._vehicle_idx + 1) < len(self._vehicles)):

@@ -1,0 +1,57 @@
+OF:;114113.554089
+;;Ants:;10.000000
+;;Number best ants:;5
+;;Interations:;100
+;;Rho:;0.990000
+;;Alpha:;0.500000
+;;Beta:;8.000000
+;;;;Numero de veiculos utilizados na solução: 7
+;;;;Informação dos veiculos
+
+;;;;Veiculo: 1
+;;;;Número de passageiros: 48
+;;;;Rota: [0, 81, 80, 85, 84, 83, 82, 78, 77, 73, 70, 69, 76, 53]
+;;;;Distância percorrida: 14.153189
+;;;;Tempo: 0.572540 
+
+
+;;;;Veiculo: 2
+;;;;Número de passageiros: 48
+;;;;Rota: [0, 79, 86, 87, 88, 89, 25, 24, 74, 23, 22]
+;;;;Distância percorrida: 8.108333
+;;;;Tempo: 0.328007 
+
+
+;;;;Veiculo: 3
+;;;;Número de passageiros: 48
+;;;;Rota: [0, 75, 67, 60, 59, 58, 57, 56, 55, 52, 48]
+;;;;Distância percorrida: 8.347474
+;;;;Tempo: 0.337681 
+
+
+;;;;Veiculo: 4
+;;;;Número de passageiros: 48
+;;;;Rota: [0, 51, 36, 50, 47, 46, 1, 49, 34, 63, 64, 21]
+;;;;Distância percorrida: 13.015451
+;;;;Tempo: 0.526515 
+
+
+;;;;Veiculo: 5
+;;;;Número de passageiros: 48
+;;;;Rota: [0, 61, 66, 65, 35, 62, 29, 28, 27, 30]
+;;;;Distância percorrida: 11.531979
+;;;;Tempo: 0.466504 
+
+
+;;;;Veiculo: 6
+;;;;Número de passageiros: 48
+;;;;Rota: [0, 54, 45, 44, 43, 42, 40, 39, 41, 38, 37, 4, 3, 2, 5, 8, 9, 7, 6, 11, 10, 12]
+;;;;Distância percorrida: 20.546300
+;;;;Tempo: 0.831161 
+
+
+;;;;Veiculo: 7
+;;;;Número de passageiros: 35
+;;;;Rota: [0, 72, 71, 68, 31, 32, 33, 20, 19, 16, 17, 18, 15, 14, 13, 26]
+;;;;Distância percorrida: 25.974219
+;;;;Tempo: 1.050737 

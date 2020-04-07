@@ -54,7 +54,7 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--n_best_ants', type=int, dest='n', 
                         default='5', help='best ants number')
     parser.add_argument('-i', '--iterations', type=int, dest='i', 
-                        default='10', help='iterations number')
+                        default='100', help='iterations number')
     parser.add_argument('-d', '--distance_matrix', 
                         dest='file_name_distance', default='distances.csv', 
                         help='distance matrix values')
@@ -69,7 +69,7 @@ if __name__ == '__main__':
                         help='occupancies values')
     args = parser.parse_args()
     
-    #print('Starting ACO Python!')    
+    print('Starting ACO Python!')    
     
     distance_matrix = read_square_matrix(args.file_name_distance)
     
@@ -85,11 +85,13 @@ if __name__ == '__main__':
     
     print("OF: %f" % (best_ant.of_value))
     
-    '''    
+    
+    # comment this part if you have been running master code to find the best parameters for ACO    
     out = "OF:;%f"% (best_ant.of_value)
     out += "\n;;Ants:;%f\n;;Number best ants:;%d\n;;Interations:;%d\n;;Rho:;%f\n;;Alpha:;%f\n;;Beta:;%f" % (args.k, args.n, args.i, args.p, args.a, args.b)
     out += str(best_ant)
     
     with open("out_ACO.csv", 'a') as fileout:
-        fileout.write(out2)
-    '''
+        fileout.write(out)
+    
+    print("Done!")
